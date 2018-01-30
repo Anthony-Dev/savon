@@ -58,7 +58,7 @@ module Savon
       create_response(response)
     end
 
-    def raw_call(raw="")
+    def raw_call(raw="", &block)
       builder = build({}, &block)
       response = call_with_logging build_raw_request(builder,raw)
       raise_expected_httpi_response! unless response.kind_of?(HTTPI::Response)

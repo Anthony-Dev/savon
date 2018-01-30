@@ -37,7 +37,7 @@ module Savon
       operation(operation_name).call(locals, &block)
     end
 
-    def raw_call(operation_name, raw="")
+    def raw_call(operation_name, raw="", &block)
       operation(operation_name).raw_call(raw)
     end
 
