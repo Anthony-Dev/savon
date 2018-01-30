@@ -114,8 +114,6 @@ module Savon
       request.url = endpoint
       request.body = builder.to_s
 
-      puts "BODY"
-      puts request.body
       # TODO: could HTTPI do this automatically in case the header
       #       was not specified manually? [dh, 2013-01-04]
       request.headers["Content-Length"] = request.body.bytesize.to_s
@@ -134,8 +132,10 @@ module Savon
       )
 
       request.url = endpoint
-      puts "RAW"
-      request.body = builder.to_s
+      body = Nokogiri::XML builder.to_s
+      body.search(".//env:Body").first.replace(raw)
+      request.body = body.to_xml
+      
       request.headers["Content-Length"] = request.body.bytesize.to_s
 
       request
