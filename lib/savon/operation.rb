@@ -49,8 +49,7 @@ module Savon
 
     def call(locals = {}, &block)
       builder = build(locals, &block)
-      puts "builder"
-      puts builder.inspect
+
       response = Savon.notify_observers(@name, builder, @globals, @locals)
       response ||= call_with_logging build_request(builder)
 
@@ -108,6 +107,8 @@ module Savon
       request.url = endpoint
       request.body = builder.to_s
 
+      puts "BODY"
+      puts request.body
       # TODO: could HTTPI do this automatically in case the header
       #       was not specified manually? [dh, 2013-01-04]
       request.headers["Content-Length"] = request.body.bytesize.to_s
