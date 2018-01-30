@@ -134,8 +134,8 @@ module Savon
       request.url = endpoint
       body = Nokogiri::XML builder.to_s
       body.search(".//env:Body").first.replace(raw)
-      request.body = body.to_xml
-      
+      request.body = body.to_xml.gsub("env:add","add").gsub("env:record","record").gsub("env:title","title").gsub("env:noteType","noteType").gsub("env:note","note").gsub("env:transaction","transaction")
+
       request.headers["Content-Length"] = request.body.bytesize.to_s
 
       request
