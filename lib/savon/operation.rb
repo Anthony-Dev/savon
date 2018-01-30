@@ -58,6 +58,13 @@ module Savon
       create_response(response)
     end
 
+    def raw_call(raw="")
+      builder = build({}, &block)
+      response = call_with_logging build_raw_request(builder,raw)
+      raise_expected_httpi_response! unless response.kind_of?(HTTPI::Response)
+      create_response(response)
+    end
+
     def request(locals = {}, &block)
       builder = build(locals, &block)
       build_request(builder)
@@ -111,6 +118,24 @@ module Savon
       puts request.body
       # TODO: could HTTPI do this automatically in case the header
       #       was not specified manually? [dh, 2013-01-04]
+      request.headers["Content-Length"] = request.body.bytesize.to_s
+
+      request
+    end
+
+    def build_raw_request(builder)
+      @locals[:soap_action] ||= soap_action
+      @globals[:endpoint] ||= endpoint
+
+      request = SOAPRequest.new(@globals).build(
+        :soap_action => soap_action,
+        :cookies     => @locals[:cookies],
+        :headers     => @locals[:headers]
+      )
+
+      request.url = endpoint
+      puts "RAW"
+      request.body = builder.to_s
       request.headers["Content-Length"] = request.body.bytesize.to_s
 
       request

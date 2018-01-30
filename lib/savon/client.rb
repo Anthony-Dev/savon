@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "savon/operation"
 require "savon/request"
 require "savon/options"
@@ -34,6 +35,10 @@ module Savon
 
     def call(operation_name, locals = {}, &block)
       operation(operation_name).call(locals, &block)
+    end
+
+    def raw_call(operation_name, raw="")
+      operation(operation_name).raw_call(raw)
     end
 
     def service_name
