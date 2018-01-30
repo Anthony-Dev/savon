@@ -123,7 +123,7 @@ module Savon
       request
     end
 
-    def build_raw_request(builder)
+    def build_raw_request(builder, raw)
       @locals[:soap_action] ||= soap_action
       @globals[:endpoint] ||= endpoint
 
